@@ -24,19 +24,33 @@ void fsm_tick(void)
 	
 	switch (current_state) {
 		case STATE_SAMPLE:
-		sample = interface_ptr->ADC_conversion_func(channel);
+			for (int i =0; i < ARRAYSIZE; i++){
+				//TODO channel numbers
+				VoltageSamp[i] = interface_ptr->ADC_conversion_func(1);
+				CurrentSamp[i] = interface_ptr->ADC_conversion_func(2);
+			}
+			 interface_ptr->timeDif();
+			 
+			 
 		current_state = STATE_CALC;
 		break;
 		
 		case STATE_CALC:
-		interface_ptr->
+		interleavedVolatage = interface_ptr->interleave(Voltage);
+		interleavedCurrent = interface_ptr->interleave(Current);
+		
+		AvePower = interface_ptr->powerCalc(interleavedVolatage,interleavedCurrent);
+		
+		phaseAngle = interface_ptr->phaseCalc(timeDef);
+		powerFactor = interface_ptr->powerFactor(phaseAngle);
+		
 		current_state = STATE_DISPLAY;
 		break;
 		
 		case STATE_DISPLAY:
 		
-		formatted = interface_ptr->uart_format_func(sample, letter);
-		interface_ptr->uart_transmit_func(formatted);
+		formattedPeakVol = interface_ptr->uart_format_func(sample, letter);
+		interface_ptr->uart_transmit_func(formattedPeakVol);
 		
 		current_state = STATE_SAMPLE;
 		break;

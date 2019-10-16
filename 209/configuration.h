@@ -1,0 +1,10 @@
+#ifndef CONFIGURATION_H_
+#define CONFIGURATION_H_
+
+#define BAUD_RATE				9600
+
+#define BUTTON_OUTPUT_PORT		DDRB
+#define BUTTON_INPUT_PORT		PINB
+#define BUTTON_PIN				7
+#define ARRAYSIZE				200
+#endif /* CONFIGURATION_H_ */
