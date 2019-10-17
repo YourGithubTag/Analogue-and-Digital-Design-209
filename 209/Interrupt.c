@@ -11,13 +11,53 @@ void init_interrupt() {
 }
 
 ISR(INT1_vect) {
+	// Detecting rising edge.
+	if (EICRA == 0b00001100) {
+		sampleVI();
+		// Storing the timer value. 
+		t1_count = TCNT0; 
+		overflow_count = 0;
+		// setting interrupt to trigger on falling edge.
+		EICRA &= 0x00;
+		EICRA |= 0b00001000; 
+	} 
 	
+	else { // Detecting falling edge
+		if (overflow_count > 0) {
+			t2_count = TCNT0;
+			overflow_count -= 1;
+			Period = 256 - t1_count;
+			Period += t2_count;
+			} else {
+			Period = t2_count - t1_count;
+		}*/
+		
+		Period += overflow_count * 256;
+		// Converting the count into micro seconds.
+		Period  *= 64;
+		EICRA &= 0x00;
+		EICRA |= 0b00001100;
+	}	
 }
 
 ISR(INT0_vect) {
+	t2_count = TCNT0;
+	if (overflow_count > 0) {
+		t2_count = TCNT0;
+		overflow_count -= 1;
+		time_dif = 256 - t1_count;
+		time_dif += t2_count;
+	}
+	else {
+		time_dif = t2_count - t1_count;
+	}
+	time_dif += overflow_count * 256;
+	// Converting the count into micro seconds.
+	time_dif  *= 64;
+	time_dif /= 1000;
 	
 }
 
 ISR(TIMER0_OVF_vect) {
-
+	overflow_count++;
 }

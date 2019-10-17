@@ -2,9 +2,9 @@
 #define CONFIGURATION_H_
 
 #define BAUD_RATE				9600
-
-#define BUTTON_OUTPUT_PORT		DDRB
-#define BUTTON_INPUT_PORT		PINB
-#define BUTTON_PIN				7
+#define PI						3.141
 #define ARRAYSIZE				200
+#define DIODEDROP				0.25
+#define VOLTAGECHANNEL			0.25
+#define CURRENTCHANNEL			0.25
 #endif /* CONFIGURATION_H_ */
