@@ -6,6 +6,7 @@
 #include <stdint.h>
 
 void init_interrupt();
+
 volatile uint8_t t1_count;
 volatile uint8_t t2_count;
 volatile uint8_t t2p_count;

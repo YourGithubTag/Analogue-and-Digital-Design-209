@@ -5,5 +5,5 @@ void timer0_init()
 {
 	TCCR0A = TIMERREGA;
 	TCCR0B = TIMERREGB;
-	OCR0A =  OCRVAL;
+	TIMSK0 |= (1 << TOIE0);
 }

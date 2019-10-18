@@ -7,21 +7,19 @@
 
 #include <avr/io.h>
 #include "adc.h"
-#include "timer.h"
+#include "timer0.h"
 #include "UART.h"
 #include "Interrupt.h"
 #include "Calcs.h"
 #include "Interrupt.h"
-
-
-#include "fsm_msd/state_machine.h"
+#include "fsm.h"
 
 #include "configuration.h"
 
 
 uint16_t VoltageSamp[ARRAYSIZE];
 uint16_t CurrentSamp[ARRAYSIZE];
-
+uint8_t formatArray[7];
 float peakVoltage;
 float Voltage[ARRAYSIZE];
 float Current[ARRAYSIZE];
@@ -35,12 +33,11 @@ int main(void)
 {
 	adc_init();
 	timer0_init();
-	uart_initialise(baud_rate);
+	uart_initialise(BAUD_RATE);
 
 	// Create the interface needed by the MSD state machine
 	struct msd_interface interface = {
 		.ADC_conversion_func = ADC_conversion,
-		.millivolt_con_func = millivolt_conversion,
 		.uart_format_func = uart_format,
 		.uart_transmit_func = uart_transmit,
 		.ADC_convert_func = adcConvertArray,

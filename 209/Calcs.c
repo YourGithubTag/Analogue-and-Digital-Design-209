@@ -10,10 +10,10 @@ float interleave(float toInterArray[]){
 float rmsCalc (float Sinosoid[]) {
 	float runningTotal = 0; 
 	float rmsVal =0; 
-	for (int i = 0; i < sizeof(SinosoidMax); i++) {
-		runningTotal += (SinosoidMax[i] * SinosoidMax[i] )
+	for (int i = 0; i < sizeof(Sinosoid); i++) {
+		runningTotal += (Sinosoid[i] * Sinosoid[i] )
 	}
-	rmsVal = (runningTotal) / (sizeof(SinosoidMax));
+	rmsVal = (runningTotal) / (sizeof(Sinosoid));
 	return rmsVal;
 }
 
@@ -46,7 +46,7 @@ float adcConvertSingle (uint16_t convertNum) {
 }
 
 float phaseCalc (uint16_t timeDif, uint16_t timePeriod) {
-	phaseangle = (float)2* PI * (float)timeDif / timePeriod ;
+	float phaseangle = (float)2* PI * (float)timeDif / timePeriod ;
 	return phaseangle;
 	
 }
@@ -72,12 +72,8 @@ float powerCalc (float Voltage[], float Current[], float interleavedVoltagef[], 
 
 float averageArrayCalc (float arrayAVE[] ) {
 	float sum;
-	for (int i = 0; i < arrayAVE->length(); i++) {
+	for (int i = 0; i < sizeof(arrayAVE); i++) {
 		sum += arrayAVE[i];
 	}
-	return (sum / arrayAVE->length());
-}
-
-float peakCorrection (float lowerPeak) {
-	return lowerPeak + DIODEDROP;
+	return (sum / sizeof(arrayAVE));
 }

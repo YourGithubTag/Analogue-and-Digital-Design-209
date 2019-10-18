@@ -19,9 +19,3 @@ uint16_t ADC_conversion(uint8_t channel) {
 	uint32_t millivolts = millivolt_conversion(adc_count);
 	return(uint16_t)millivolts;
 }
-
-uint32_t millivolt_conversion(uint8_t adc_count) {
-	uint32_t millivolts = (uint32_t)adc_count*(uint32_t)5000 / PRESCALER;
-	return millivolts;
-}
-

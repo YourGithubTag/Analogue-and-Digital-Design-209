@@ -1,5 +1,3 @@
-float AvepowerCalc (uint16_t interVoltage, uint16_t interCurrent) 
-float SIMP_AVEPowerCalc (uint16_t Vpeak, uint16_t Ipeak,double phaseAngle) 
 
 float interleave(float toInterArray[])
 
@@ -12,5 +10,3 @@ float powerFactor (float phaseAngle);
 float powerCalc (float Voltage[], float Current[], float interleavedVoltagef[], float interleavedCurrentf[], float powerFactor)
 
 float averageArrayCalc (uint16_t* arrayAVE ) 
-
-float peakCorrection (float lowerPeak)

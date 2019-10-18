@@ -8,8 +8,11 @@ volatile uint16_t Period = 0;
 volatile uint16_t time_dif = 0;
 
 void init_interrupt() {
-	EIMSK |= EIMSKVAL;
+	//EIMSK |= EIMSKVAL;
 	EICRA |= EICVALA; 
+	
+	EIMSK |= (1 << INT1);
+	EIMSK |= (1 << INT0);
 }
 
 ISR(INT1_vect) {
@@ -34,6 +37,7 @@ ISR(INT1_vect) {
 		}
 		
 		Period += overflow_countperiod * 256;
+		Period *= 2;
 		EICRA &= 0x00;
 		EICRA |= 0b00001100;
 	}	
@@ -41,7 +45,7 @@ ISR(INT1_vect) {
 
 ISR(INT0_vect) {
 	t2_count = TCNT0;
-	if (overflow_count > 0) {
+	if (overflow_counttimedif > 0) {
 		t2_count = TCNT0;
 		overflow_counttimedif -= 1;
 		time_dif = 256 - t1_count;
