@@ -62,6 +62,8 @@ void fsm_tick(void)
 		formattedPeakVol = interface_ptr->uart_format_func(peakVol, letter);
 		interface_ptr->uart_transmit_func(formattedPeakVol);
 		
+		
+		
 		current_state = STATE_SAMPLE;
 		break;
 		

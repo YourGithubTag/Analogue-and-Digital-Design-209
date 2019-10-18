@@ -13,7 +13,7 @@ float SIMP_AVEPowerCalc (uint16_t Vpeak, uint16_t Ipeak,double phaseAngle) {
 	return AvePower;
 }
 
-uint16_t interleave(uint16_t toInterArray[]){
+float interleave(float toInterArray[]){
 	uint16_t interleaveArray[ARRAYSIZE - 1];
 	for (int i= 0; i < (ARRAYSIZE - 1); i++) {
 		interleaveArray[i] = (toInterArray[i] + toInterArray[i+1]) /2;
@@ -21,15 +21,16 @@ uint16_t interleave(uint16_t toInterArray[]){
 	return interleaveArray;
 }
 
-float rmsCalc (uint16_t* SinosoidMax) {
-	uint32_t runningTotal = 0; 
-	uint16_t rmsVal =0; 
-	for (int i = 0; i < SinosoidMax->length(); i++) {
+float rmsCalc (float Sinosoid[]) {
+	float runningTotal = 0; 
+	float rmsVal =0; 
+	for (int i = 0; i < sizeof(SinosoidMax); i++) {
 		runningTotal += (SinosoidMax[i] * SinosoidMax[i] )
 	}
-	rmsVal = (runningTotal) / (SinosoidMax->length() );
+	rmsVal = (runningTotal) / (sizeof(SinosoidMax));
 	return rmsVal;
 }
+
 float adcConvertArray (uint16_t convertArray[], uint8_t isCurrent) {
 	float converted[sizeof(convertArray)];
 	if (isCurrent == 1) {
@@ -54,6 +55,7 @@ float adcConvertSingle (uint16_t convertNum) {
 	float converted;
 		converted = ( (float)convertNum / (2^RESOLUTION) )*VREF;
 		converted -= OFFSET;
+		converted /= ((float)RESISTOR2 / (RESISTOR1 + RESISTOR2));
 	return converted;
 }
 
@@ -65,12 +67,17 @@ float phaseCalc (uint16_t timeDif, uint16_t timePeriod) {
 
 float powerCalc (float Voltage[], float Current[], float interleavedVoltagef[], float interleavedCurrentf[], float powerFactor){
 	float powerArray[(ARRAYSIZE-1) * 2];
-	
+	int j;
+	float area =0;
 	for (int i = 0; i < ARRAYSIZE-1; i++) {
-		j=2*i;
+		 j=2*i;
 		powerArray[j] = Voltage[i] * interleavedCurrentf[i];
 		powerArray[j+1] = Current[i] * interleavedVoltagef[i];
 	}
+	for (int k = 0; k < (ARRAYSIZE-1) * 2; k++){
+		area += ( powerArray[k] * POWERSAMPLETIME );
+	}
+	return (area * powerFactor);
 	
 }
 

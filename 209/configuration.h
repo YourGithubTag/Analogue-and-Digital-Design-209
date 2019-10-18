@@ -19,4 +19,6 @@
 #define	RESISTOR1				2.2
 #define	RESISTOR2				27
 #define CURRENTGAIN				2.7
+
+#define POWERSAMPLETIME			//ADC SAMPLING VALUE
 #endif /* CONFIGURATION_H_ */

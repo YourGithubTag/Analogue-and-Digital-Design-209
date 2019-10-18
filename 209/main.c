@@ -8,7 +8,9 @@
 #include <avr/io.h>
 #include "adc.h"
 #include "timer.h"
-#include "uart.h"
+#include "UART.h"
+#include "Interrupt.h"
+#include "Calcs.h"
 #include "Interrupt.h"
 
 
