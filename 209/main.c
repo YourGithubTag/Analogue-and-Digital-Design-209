@@ -28,8 +28,9 @@ float Current[ARRAYSIZE];
 float interleavedVoltagef[ARRAYSIZE-1];
 float interleavedCurrentf[ARRAYSIZE-1];
 float phaseAngle;
-float powerFactor;
+float powerFactorVAL;
 float Power;
+
 int main(void)
 {
 	adc_init();
@@ -38,10 +39,16 @@ int main(void)
 
 	// Create the interface needed by the MSD state machine
 	struct msd_interface interface = {
-		.convert_channel_func = ADC_conversion,
+		.ADC_conversion_func = ADC_conversion,
 		.millivolt_con_func = millivolt_conversion,
 		.uart_format_func = uart_format,
-		.uart_transmit_func = uart_transmit
+		.uart_transmit_func = uart_transmit,
+		.ADC_convert_func = adcConvertArray,
+		.interleave_func =interleave,
+		.adc_convertsing_func = adcConvertSingle,
+		.phaseCalc_func = phaseCalc,
+		.powerFactor_func = powerFactor,
+		.powerCalc_func = powerCalc
 	};
 	
 	fsm_init(&interface);

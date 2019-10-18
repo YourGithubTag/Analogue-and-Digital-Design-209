@@ -1,18 +1,4 @@
 
-float AvepowerCalc (uint16_t interVoltage, uint16_t interCurrent) {
-	uint32_t runningTotal = 0;
-	uint16_t rmsVal =0;
-	for (int i = 0; i < (ARRAYSIZE -1); i++) {
-		runningTotal += (interVoltage[i] * interCurrent[i] )
-	}
-	rmsVal = (runningTotal) / (ARRAYSIZE -1);
-	return rmsVal;
-}
-float SIMP_AVEPowerCalc (uint16_t Vpeak, uint16_t Ipeak,double phaseAngle) {
-	AvePower = SIMP_RMS(Vpeak) * SIMP_RMS(Ipeak) * cos (phaseAngle);
-	return AvePower;
-}
-
 float interleave(float toInterArray[]){
 	uint16_t interleaveArray[ARRAYSIZE - 1];
 	for (int i= 0; i < (ARRAYSIZE - 1); i++) {
@@ -64,6 +50,9 @@ float phaseCalc (uint16_t timeDif, uint16_t timePeriod) {
 	return phaseangle;
 	
 }
+float powerFactor (float phaseAngle) {
+	return (float)(cos ((double)phaseAngle));
+}
 
 float powerCalc (float Voltage[], float Current[], float interleavedVoltagef[], float interleavedCurrentf[], float powerFactor){
 	float powerArray[(ARRAYSIZE-1) * 2];
@@ -74,15 +63,15 @@ float powerCalc (float Voltage[], float Current[], float interleavedVoltagef[], 
 		powerArray[j] = Voltage[i] * interleavedCurrentf[i];
 		powerArray[j+1] = Current[i] * interleavedVoltagef[i];
 	}
+	//ALTERNATE IS TO TAKE AVERAGE
 	for (int k = 0; k < (ARRAYSIZE-1) * 2; k++){
 		area += ( powerArray[k] * POWERSAMPLETIME );
 	}
 	return (area * powerFactor);
-	
 }
 
-float averageArrayCalc (uint16_t* arrayAVE ) {
-	uint16_t sum;
+float averageArrayCalc (float arrayAVE[] ) {
+	float sum;
 	for (int i = 0; i < arrayAVE->length(); i++) {
 		sum += arrayAVE[i];
 	}

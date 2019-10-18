@@ -42,17 +42,17 @@ void fsm_tick(void)
 		break;
 		
 		case STATE_CALC:
-		Voltage = interface_ptr->adcConvertArray(VoltageSamp, 0);
-		Current = interface_ptr->adcConvertArray(CurrentSamp,1);
-		interleavedVoltagef = interface_ptr->interleave(Voltage);
-		interleavedCurrentf = interface_ptr->interleave(Current);
+		Voltage = interface_ptr->ADC_convert_func(VoltageSamp, 0);
+		Current = interface_ptr->ADC_convert_func(CurrentSamp,1);
+		interleavedVoltagef = interface_ptr->interleave_func(Voltage);
+		interleavedCurrentf = interface_ptr->interleave_func(Current);
 		
-		peakVoltage = interface_ptr->adcConvertSingle(peakVoltage);
+		peakVoltage = interface_ptr->adc_convertsing_func(peakVoltage);
 		
-		phaseAngle = interface_ptr->phaseCalc(timeDif);
-		powerFactor = interface_ptr->powerFactor(phaseAngle);
+		phaseAngle = interface_ptr->phaseCalc_func(timeDif);
+		powerFactorVAL = interface_ptr->powerFactor_func(phaseAngle);
 		
-		Power = interface_ptr->powerCalc(Voltage, Current, interleavedVoltagef, interleavedCurrentf, powerFactor);
+		Power = interface_ptr->powerCalc_func(Voltage, Current, interleavedVoltagef, interleavedCurrentf, powerFactor);
 		
 		current_state = STATE_DISPLAY;
 		break;
