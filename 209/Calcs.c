@@ -13,10 +13,10 @@ float SIMP_AVEPowerCalc (uint16_t Vpeak, uint16_t Ipeak,double phaseAngle) {
 	return AvePower;
 }
 
-float interleave(uint16_t* toInterArray){
+uint16_t interleave(uint16_t toInterArray){
 	uint16_t interleaveArray[ARRAYSIZE - 1];
-	for (int i= 1; i < (ARRAYSIZE - 1); i++) {
-		interleaveArray[i] = (toInterArray[i-1] + toInterArray[i+1]) /2;
+	for (int i= 0; i < (ARRAYSIZE - 1); i++) {
+		interleaveArray[i] = (toInterArray[i] + toInterArray[i+1]) /2;
 	}
 	return interleaveArray;
 }
@@ -31,11 +31,12 @@ float rmsCalc (uint16_t* SinosoidMax) {
 	return rmsVal;
 }
 
-float phaseCalc (uint16_t timeDif) {
+float phaseCalc (uint16_t timeDif, uint16_t timePeriod) {
 	phaseangle = (float)2* PI * (float)timeDif / timePeriod ;
 	return phaseangle;
 	
 }
+
 
 uint16_t peakCalc (uint16_t PeakVal) {
 	
