@@ -53,7 +53,16 @@ float phaseCalc (uint16_t timeDif, uint16_t timePeriod) {
 	
 }
 
-float powerCalc (float )
+float powerCalc (float Voltage[], float Current[], float interleavedVoltagef[], float interleavedCurrentf[], float powerFactor){
+	float powerArray[(ARRAYSIZE-1) * 2];
+	
+	for (int i = 0; i < ARRAYSIZE-1; i++) {
+		j=2*i;
+		powerArray[j] = Voltage[i] * interleavedCurrentf[i];
+		powerArray[j+1] = Current[i] * interleavedVoltagef[i];
+	}
+	
+}
 
 float averageArrayCalc (uint16_t* arrayAVE ) {
 	uint16_t sum;
