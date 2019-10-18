@@ -42,8 +42,8 @@ void fsm_tick(void)
 		break;
 		
 		case STATE_CALC:
-		Voltage = interface_ptr->adcConvertArray(VoltageSamp);
-		Current = interface_ptr->adcConvertArray(CurrentSamp);
+		Voltage = interface_ptr->adcConvertArray(VoltageSamp, 0);
+		Current = interface_ptr->adcConvertArray(CurrentSamp,1);
 		interleavedVoltagef = interface_ptr->interleave(Voltage);
 		interleavedCurrentf = interface_ptr->interleave(Current);
 		

@@ -30,16 +30,26 @@ float rmsCalc (uint16_t* SinosoidMax) {
 	rmsVal = (runningTotal) / (SinosoidMax->length() );
 	return rmsVal;
 }
-float adcConvertArray (uint16_t convertArray[]) {
+float adcConvertArray (uint16_t convertArray[], uint8_t isCurrent) {
 	float converted[sizeof(convertArray)];
-	
+	if (isCurrent == 1) {
+		
 	for (int i=0; i<sizeof(convertArray); i++){
 		 converted[i] = ( (float)convertArray[i] / (2^RESOLUTION) )*VREF;
 		 converted[i] -= OFFSET;
+		 converted[i] /= CURRENTGAIN;
+		 converted[i] /= SHUNTVAL;
 	}
 	return converted;
+	} else {
+	for (int i=0; i<sizeof(convertArray); i++){
+		converted[i] = ( (float)convertArray[i] / (2^RESOLUTION) )*VREF;
+		converted[i] -= OFFSET;
+		converted[i] /= ((float)RESISTOR2 / (RESISTOR1 + RESISTOR2));
+	}	
+	return converted;
+	}
 }
-
 float adcConvertSingle (uint16_t convertNum) {
 	float converted;
 		converted = ( (float)convertNum / (2^RESOLUTION) )*VREF;

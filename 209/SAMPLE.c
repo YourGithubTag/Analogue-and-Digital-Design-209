@@ -10,7 +10,4 @@ void timeDif() {
 	}
 	t2Count = TCNT0;
 	
-	
-	
-	
 }

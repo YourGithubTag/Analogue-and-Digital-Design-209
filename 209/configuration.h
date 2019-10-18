@@ -16,4 +16,7 @@
 
 #define OFFSET					1.8
 #define SHUNTVAL				0.75
+#define	RESISTOR1				2.2
+#define	RESISTOR2				27
+#define CURRENTGAIN				2.7
 #endif /* CONFIGURATION_H_ */
