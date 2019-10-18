@@ -27,25 +27,32 @@ void fsm_tick(void)
 		cli();
 		for (int i = 0; i < ARRAYSIZE; i++){
 			//TODO channel numbers
-			VoltageSamp[i] = interface_ptr->ADC_conversion_func(VoltageChannel);
-			CurrentSamp[i] = interface_ptr->ADC_conversion_func(CurrentChannel);
+			VoltageSamp[i] = interface_ptr->ADC_conversion_func(VOLTAGECHANNEL);
+			CurrentSamp[i] = interface_ptr->ADC_conversion_func(CURRENTCHANNEL);
 		}
 		sei();
+		
 		while (Period && time_dif) {
 			;
 		}
+		
+		peakVoltage = interface_ptr->ADC_conversion_func(PEAKVOLTAGECHANNEL);
+		
 		current_state = STATE_CALC;
 		break;
 		
 		case STATE_CALC:
+		Voltage = interface_ptr->adcConvertArray(VoltageSamp);
+		Current = interface_ptr->adcConvertArray(CurrentSamp);
+		interleavedVoltagef = interface_ptr->interleave(Voltage);
+		interleavedCurrentf = interface_ptr->interleave(Current);
 		
-		uint16_t interleavedVolatage = interface_ptr->interleave(Voltage);
-		uint16_t interleavedCurrent = interface_ptr->interleave(Current);
+		peakVoltage = interface_ptr->adcConvertSingle(peakVoltage);
 		
-		float AvePower = interface_ptr->powerCalc(interleavedVolatage,interleavedCurrent);
-		
-		phaseAngle = interface_ptr->phaseCalc(timeDef);
+		phaseAngle = interface_ptr->phaseCalc(timeDif);
 		powerFactor = interface_ptr->powerFactor(phaseAngle);
+		
+		Power = interface_ptr->powerCalc(Voltage, Current, interleavedVoltagef, interleavedCurrentf, powerFactor);
 		
 		current_state = STATE_DISPLAY;
 		break;

@@ -9,12 +9,25 @@
 #include "adc.h"
 #include "timer.h"
 #include "uart.h"
+#include "Interrupt.h"
 
 
 #include "fsm_msd/state_machine.h"
 
 #include "configuration.h"
 
+
+uint16_t VoltageSamp[ARRAYSIZE];
+uint16_t CurrentSamp[ARRAYSIZE];
+
+float peakVoltage;
+float Voltage[ARRAYSIZE];
+float Current[ARRAYSIZE];
+float interleavedVoltagef[ARRAYSIZE-1];
+float interleavedCurrentf[ARRAYSIZE-1];
+float phaseAngle;
+float powerFactor;
+float Power;
 int main(void)
 {
 	adc_init();

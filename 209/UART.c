@@ -5,12 +5,14 @@
 
 uint8_t uart_format(float number, char letter ) {
 	uint8_t tens = (number / 10) % 10) + 48;
-	if (tens == 0) {
+	uint8_t thousand = (number / 1000) + 48;
+	uint8_t hundreds = ((number / 100) % 10) + 48;
+	if (tens == 0 && thousand == 0 && hundreds == 0) {
 		number *= 1000;
 			uint8_t work = uint8_t(letter);
 			uint8_t equal = 0x3D;
-			uint8_t thousand = (number / 1000) + 48;
-			uint8_t hundreds = ((number / 100) % 10) + 48;
+			thousand = (number / 1000) + 48;
+			hundreds = ((number / 100) % 10) + 48;
 			tens = (number / 10) % 10) + 48;
 			uint8_t ones = (number % 10) + 48;
 			uint8_t UARTFrames[8] = {work, equal, thousand, 46 ,hundreds, tens, ones, 10};
@@ -19,8 +21,8 @@ uint8_t uart_format(float number, char letter ) {
 	else {
 		uint8_t work = uint8_t(letter);
 		uint8_t equal = 0x3D;
-		uint8_t thousand = (number / 1000) + 48;
-		uint8_t hundreds = ((number / 100) % 10) + 48;
+		thousand = (number / 1000) + 48;
+		hundreds = ((number / 100) % 10) + 48;
 		tens = (number / 10) % 10) + 48;
 		uint8_t ones = (number % 10) + 48;
 		uint8_t UARTFrame[7] = {work, equal, thousand, hundreds, tens, ones, 10};
